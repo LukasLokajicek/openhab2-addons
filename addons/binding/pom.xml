@@ -130,5 +130,7 @@
     <module>org.openhab.binding.yeelight</module>
     <module>org.openhab.binding.zoneminder</module>
     <module>org.openhab.binding.zway</module>
+    <module>org.openhab.binding.forcomfort</module>
+    <module>org.openhab.binding.forcomfort.test</module>
   </modules>
 </project>
