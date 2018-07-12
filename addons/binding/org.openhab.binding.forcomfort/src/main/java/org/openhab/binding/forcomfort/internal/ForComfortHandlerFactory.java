@@ -22,8 +22,8 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
 import org.eclipse.smarthome.core.thing.binding.BaseThingHandlerFactory;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandlerFactory;
+import org.openhab.binding.forcomfort.handler.ButtonModuleHandler;
 import org.openhab.binding.forcomfort.handler.ForComfortBridgeHandler;
-import org.openhab.binding.forcomfort.handler.ForComfortHandler;
 import org.osgi.service.component.annotations.Component;
 
 import com.google.common.collect.Sets;
@@ -41,7 +41,7 @@ public class ForComfortHandlerFactory extends BaseThingHandlerFactory {
     // private Logger logger = LoggerFactory.getLogger(ForComfortHandlerFactory.class);
 
     private final static Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Sets
-            .union(ForComfortBridgeHandler.SUPPORTED_THING_TYPES, ForComfortHandler.SUPPORTED_THING_TYPES);
+            .union(ForComfortBridgeHandler.SUPPORTED_THING_TYPES, ButtonModuleHandler.SUPPORTED_THING_TYPES);
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -51,15 +51,11 @@ public class ForComfortHandlerFactory extends BaseThingHandlerFactory {
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
         ThingTypeUID thingTypeUID = thing.getThingTypeUID();
-
         if (ForComfortBindingConstants.THING_TYPE_WIRE_BRIDGE.equals(thingTypeUID)) {
             return new ForComfortBridgeHandler((Bridge) thing);
+        } else if (ForComfortBindingConstants.THING_TYPE_BUTTON_MODULE.equals(thingTypeUID)) {
+            return new ButtonModuleHandler(thing);
         }
-
-        if ("".equals(thingTypeUID)) {
-            return new ForComfortHandler(thing);
-        }
-
         return null;
     }
 }

@@ -19,12 +19,10 @@ import java.util.Enumeration;
 import java.util.TooManyListenersException;
 
 import org.apache.commons.io.IOUtils;
-import org.eclipse.smarthome.core.thing.Bridge;
-import org.eclipse.smarthome.core.thing.ChannelUID;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.smarthome.core.thing.ThingStatus;
 import org.eclipse.smarthome.core.thing.ThingStatusDetail;
-import org.eclipse.smarthome.core.thing.binding.BaseBridgeHandler;
-import org.eclipse.smarthome.core.types.Command;
+import org.openhab.binding.forcomfort.physical.ByteArrayListener;
 import org.openhab.binding.forcomfort.util.BytesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,41 +44,34 @@ import gnu.io.UnsupportedCommOperationException;
  *
  * @author Karel Goderis - Initial contribution
  */
-public abstract class SerialBridgeHandler extends BaseBridgeHandler implements SerialPortEventListener {
+public class SerialHandler implements SerialPortEventListener {
 
     // List of all Configuration parameters
     public static final String PORT = "port";
     public static final String BAUD_RATE = "baud";
     public static final String BUFFER_SIZE = "buffer";
 
-    private final Logger logger = LoggerFactory.getLogger(SerialBridgeHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(SerialHandler.class);
 
     private SerialPort serialPort;
     private CommPortIdentifier portId;
     private InputStream inputStream;
     private OutputStream outputStream;
-    protected int baud;
-    protected int dataBits;
-    protected int parity;
-    protected int stopBits;
-    protected String portName;
-    protected int bufferSize;
-    protected long sleep = 100;
-    protected long interval = 0;
-    Thread readerThread = null;
+    private int baud = 3840;
+    private int dataBits = 8;
+    private int parity = 0;
+    private int stopBits = 1;
+    private String portName;
+    private int bufferSize;
+    private long sleep = 100;
+    private long interval = 0;
+    private Thread readerThread = null;
+    @NonNull
+    private final ByteArrayListener listener;
 
-    public SerialBridgeHandler(Bridge thing) {
-        super(thing);
+    public SerialHandler(@NonNull ByteArrayListener listener) {
+        this.listener = listener;
     }
-
-    /**
-     * Called when data is received on the serial port
-     *
-     * @param line
-     *                 - the received data as a String
-     *
-     **/
-    public abstract void onDataReceived(byte... bytes);
 
     /**
      * Write data to the serial port
@@ -89,15 +80,16 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
      *                - the received data as a String
      *
      **/
-    public void write(String msg) {
+    public UpdateStatusHolder write(String msg) {
         try {
             // write string to serial port
             outputStream.write(msg.getBytes());
             outputStream.flush();
         } catch (IOException e) {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
+            return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR,
                     "Error writing '" + msg + "' to serial port " + portName + " : " + e.getMessage());
         }
+        return null;
     }
 
     /**
@@ -107,18 +99,18 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
      *                - the received data as a String
      *
      **/
-    public void write(byte... bytes) {
+    public UpdateStatusHolder write(byte... bytes) {
         try {
             // write string to serial port
             outputStream.write(bytes);
             outputStream.flush();
         } catch (IOException e) {
-            updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error writing '"
+            return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.COMMUNICATION_ERROR, "Error writing '"
                     + BytesUtil.byteHexString(bytes) + "' to serial port " + portName + " : " + e.getMessage());
         }
+        return null;
     }
 
-    @Override
     public void dispose() {
         logger.debug("Disposing serial thing handler.");
         if (serialPort != null) {
@@ -155,8 +147,7 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
         }
     }
 
-    @Override
-    public void initialize() {
+    public UpdateStatusHolder initialize() {
         logger.debug("Initializing serial thing handler.");
 
         if (serialPort == null && portName != null && baud != 0) {
@@ -179,25 +170,22 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
                 try {
                     serialPort = portId.open("openHAB", 2000);
                 } catch (PortInUseException e) {
-                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                    return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
                             "Could not open serial port " + serialPort + ": " + e.getMessage());
-                    return;
                 }
 
                 try {
                     inputStream = serialPort.getInputStream();
                 } catch (IOException e) {
-                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                    return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
                             "Could not open serial port " + serialPort + ": " + e.getMessage());
-                    return;
                 }
 
                 try {
                     serialPort.addEventListener(this);
                 } catch (TooManyListenersException e) {
-                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                    return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
                             "Could not open serial port " + serialPort + ": " + e.getMessage());
-                    return;
                 }
 
                 // activate the DATA_AVAILABLE notifier
@@ -207,44 +195,104 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
                     // set port parameters
                     serialPort.setSerialPortParams(baud, dataBits, stopBits, parity);
                 } catch (UnsupportedCommOperationException e) {
-                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                    return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
                             "Could not configure serial port " + serialPort + ": " + e.getMessage());
-                    return;
                 }
 
                 try {
                     // get the output stream
                     outputStream = serialPort.getOutputStream();
-                    updateStatus(ThingStatus.ONLINE);
                 } catch (IOException e) {
-                    updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                    return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
                             "Could not communicate with the serial port " + serialPort + ": " + e.getMessage());
-                    return;
                 }
 
                 readerThread = new SerialPortReader(inputStream);
                 readerThread.start();
 
             } else {
-                StringBuilder sb = new StringBuilder();
+                StringBuilder portNames = new StringBuilder();
                 portList = CommPortIdentifier.getPortIdentifiers();
                 while (portList.hasMoreElements()) {
                     CommPortIdentifier id = (CommPortIdentifier) portList.nextElement();
                     if (id.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                        sb.append(id.getName() + "\n");
+                        portNames.append(id.getName() + "\n");
                     }
                 }
-                logger.error("Serial port '{}' could not be found. Available ports are:\n {}", portName, sb);
-                updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR);
+                StringBuilder errorMessage = new StringBuilder("Serial port ");
+                errorMessage.append(portName);
+                errorMessage.append(" could not be found. Available ports are:\n ");
+                errorMessage.append(portNames);
+                logger.error(errorMessage.toString());
+                return new UpdateStatusHolder(ThingStatus.OFFLINE, ThingStatusDetail.CONFIGURATION_ERROR,
+                        errorMessage.toString());
             }
         }
+        return null;
     }
 
-    @Override
-    public void handleCommand(ChannelUID channelUID, Command command) {
-        // by default, we write anything we received as a string to the serial
-        // port
-        write(command.toString());
+    public int getBaud() {
+        return baud;
+    }
+
+    public void setBaud(int baud) {
+        this.baud = baud;
+    }
+
+    public int getDataBits() {
+        return dataBits;
+    }
+
+    public void setDataBits(int dataBits) {
+        this.dataBits = dataBits;
+    }
+
+    public int getParity() {
+        return parity;
+    }
+
+    public void setParity(int parity) {
+        this.parity = parity;
+    }
+
+    public int getStopBits() {
+        return stopBits;
+    }
+
+    public void setStopBits(int stopBits) {
+        this.stopBits = stopBits;
+    }
+
+    public String getPortName() {
+        return portName;
+    }
+
+    public void setPortName(String portName) {
+        this.portName = portName;
+    }
+
+    public int getBufferSize() {
+        return bufferSize;
+    }
+
+    public void setBufferSize(int bufferSize) {
+        this.bufferSize = bufferSize;
+    }
+
+    public long getSleep() {
+        return sleep;
+    }
+
+    public void setSleep(long sleep) {
+        this.sleep = sleep;
+    }
+
+    public long getInterval() {
+        return interval;
+    }
+
+    public void setInterval(long interval) {
+        this.interval = interval;
     }
 
     public class SerialPortReader extends Thread {
@@ -257,7 +305,7 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
 
         public SerialPortReader(InputStream in) {
             this.inputStream = in;
-            this.setName("SerialPortReader-" + getThing().getUID());
+            this.setName("SerialPortReader - " + portName);
         }
 
         @Override
@@ -282,7 +330,7 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
                     long startOfRead = System.currentTimeMillis();
 
                     if ((len = inputStream.read(tmpData)) > 0) {
-                        onDataReceived(Arrays.copyOf(tmpData, len));
+                        listener.onDataReceived(Arrays.copyOf(tmpData, len));
                         if (hasInterval) {
                             try {
                                 Thread.sleep(Math.max(interval - (System.currentTimeMillis() - startOfRead), 0));
@@ -306,5 +354,16 @@ public abstract class SerialBridgeHandler extends BaseBridgeHandler implements S
 
             logger.debug("Serial port listener for serial port '{}' has stopped", portName);
         }
+    }
+
+    public void setParametres(String portName, int baud, int dataBits, int parity, int stopBits, int bufferSize,
+            int sleep) {
+        this.portName = portName;
+        this.baud = baud;
+        this.dataBits = dataBits;
+        this.parity = parity;
+        this.stopBits = stopBits;
+        this.bufferSize = bufferSize;
+        this.sleep = sleep;
     }
 }

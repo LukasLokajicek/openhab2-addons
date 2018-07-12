@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<thing:thing-descriptions bindingId="forcomfort"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:thing="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0"
+	xsi:schemaLocation="http://eclipse.org/smarthome/schemas/thing-description/v1.0.0 http://eclipse.org/smarthome/schemas/thing-description-1.0.0.xsd">
+
+	<!-- Sample Thing Type -->
+	<thing-type id="buttonModule">
+		<supported-bridge-type-refs>
+			<bridge-type-ref id="wireBridge" />
+		</supported-bridge-type-refs>
+		<label>Button Module</label>
+		<description>Button module has 8 button elements</description>
+		<channels>
+			<channel id="buttonElement0" typeId="buttonElement" />
+			<channel id="buttonElement1" typeId="buttonElement" />
+			<channel id="buttonElement2" typeId="buttonElement" />
+			<channel id="buttonElement3" typeId="buttonElement" />
+			<channel id="buttonElement4" typeId="buttonElement" />
+			<channel id="buttonElement5" typeId="buttonElement" />
+			<channel id="buttonElement6" typeId="buttonElement" />
+			<channel id="buttonElement7" typeId="buttonElement" />
+		</channels>
+
+
+		<config-description>
+			<parameter name="address" type="text" required="true" pattern="[0-9a-fA-F]+">
+				<label>Module Address [hex]</label>
+				<description>Module address in hex format.</description>
+			</parameter>
+		</config-description>
+
+	</thing-type>
+
+	<!-- Button Channel Type -->
+	<channel-type id="buttonElement">
+		<item-type>Switch</item-type>
+		<label>Button Channel</label>
+		<description>Button channel for receiving the states from the module</description>
+	</channel-type>
+
+</thing:thing-descriptions>

@@ -30,9 +30,7 @@ public class ForComfortBindingConstants {
 
     // 4com4t wire bridge
     public final static ThingTypeUID THING_TYPE_WIRE_BRIDGE = new ThingTypeUID(BINDING_ID, "wireBridge");
-
-    // List of all Channel ids
-    public static final String CHANNEL_1 = "channel1";
+    public final static ThingTypeUID THING_TYPE_BUTTON_MODULE = new ThingTypeUID(BINDING_ID, "buttonModule");
 
     // Bridge configuration (COM port configuration)
     public static final String BRIDGE_CONFIG_PORT = "port";
@@ -41,4 +39,10 @@ public class ForComfortBindingConstants {
     public static final String BRIDGE_CONFIG_PARITY = "parity";
     public static final String BRIDGE_CONFIG_STOP_BITS = "stopBits";
     public static final String BRIDGE_CONFIG_BUFFER_SIZE = "bufferSize";
+
+    // Thing constants
+    public static final String MODULE_ADDRESS = "address";
+
+    // List of all Channel ids
+    public static final String BUTTON_ELEMENT_CHANNEL = "buttonElement";
 }

@@ -26,10 +26,10 @@ import org.eclipse.smarthome.test.storage.VolatileStorageService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openhab.binding.forcomfort.handler.ForComfortHandler;
+import org.openhab.binding.forcomfort.handler.ButtonModuleHandler;
 
 /**
- * Test cases for {@link ForComfortHandler}.
+ * Test cases for {@link ButtonModuleHandler}.
  *
  * @author LukasLokajicek - Initial contribution
  */

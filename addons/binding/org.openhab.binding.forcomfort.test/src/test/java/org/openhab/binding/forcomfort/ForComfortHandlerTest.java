@@ -30,7 +30,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 
 /**
- * Test cases for {@link ForComfortHandler}. The tests provide mocks for supporting entities using Mockito.
+ * Test cases for {@link ButtonModuleHandler}. The tests provide mocks for supporting entities using Mockito.
  *
  * @author LukasLokajicek - Initial contribution
  */
@@ -47,7 +47,7 @@ public class ForComfortHandlerTest {
     @Before
     public void setUp() {
         initMocks(this);
-        handler = new ForComfortHandler(thing);
+        handler = new ButtonModuleHandler(thing);
         handler.setCallback(callback);
     }
 
