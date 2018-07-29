@@ -1,7 +1,8 @@
 Manifest-Version: 1.0
 Automatic-Module-Name: org.openhab.binding.forcomfort
 Bundle-ActivationPolicy: lazy
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ lib/java-json.jar
 Bundle-ManifestVersion: 2
 Bundle-Name: ForComfort Binding
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
