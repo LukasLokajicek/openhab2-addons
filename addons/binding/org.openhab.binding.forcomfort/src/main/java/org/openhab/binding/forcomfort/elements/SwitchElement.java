@@ -7,7 +7,7 @@ import org.eclipse.smarthome.core.library.types.PercentType;
 import org.eclipse.smarthome.core.types.State;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
+import org.openhab.binding.forcomfort.ForComfortBindingConstants;
 import org.openhab.binding.forcomfort.internal.AbstractElement;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementParam;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementType;
@@ -70,6 +70,6 @@ public class SwitchElement extends AbstractElement {
         }
 
         State state = b ? OnOffType.ON : OnOffType.OFF;
-        listener.updateStateThing(ForcomfortBindingConstants.CHANNEL_SWITCH, state);
+        listener.updateStateThing(ForComfortBindingConstants.CHANNEL_SWITCH, state);
     }
 }

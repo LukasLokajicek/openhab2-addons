@@ -7,7 +7,7 @@
  */
 package org.openhab.binding.forcomfort.internal;
 
-import static org.openhab.binding.forcomfort.ForcomfortBindingConstants.THING_TYPE_BRIDGE;
+import static org.openhab.binding.forcomfort.ForComfortBindingConstants.THING_TYPE_BRIDGE;
 
 import java.math.BigDecimal;
 import java.util.Collection;
@@ -28,7 +28,7 @@ import org.eclipse.smarthome.core.types.Command;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
+import org.openhab.binding.forcomfort.ForComfortBindingConstants;
 import org.openhab.binding.forcomfort.elements.DimmableLight;
 import org.openhab.binding.forcomfort.elements.RGBLight;
 import org.openhab.binding.forcomfort.elements.ShutterElement;
@@ -40,16 +40,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The {@link ForcomfortBridgeHandler} is responsible for handling commands, which are
+ * The {@link ForComfortBridgeHandler} is responsible for handling commands, which are
  * sent to one of the channels.
  *
  * @author Lukas_L - Initial contribution
  */
-public class ForcomfortBridgeHandler extends ConfigStatusBridgeHandler implements TCPlistener {
+public class ForComfortBridgeHandler extends ConfigStatusBridgeHandler implements TCPlistener {
 
     public final static Set<ThingTypeUID> SUPPORTED_THING_TYPES = Collections.singleton(THING_TYPE_BRIDGE);
 
-    private final Logger logger = LoggerFactory.getLogger(ForcomfortBridgeHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(ForComfortBridgeHandler.class);
 
     private TCPclient tcpClient;
 
@@ -62,10 +62,10 @@ public class ForcomfortBridgeHandler extends ConfigStatusBridgeHandler implement
 
     Bridge bridge;
 
-    public ForcomfortBridgeHandler(Bridge bridge) {
+    public ForComfortBridgeHandler(Bridge bridge) {
         super(bridge);
         this.bridge = bridge;
-        logger.debug("Forcomfort bridge was created");
+        logger.debug("ForComfort bridge was created");
     }
 
     @Override
@@ -82,20 +82,20 @@ public class ForcomfortBridgeHandler extends ConfigStatusBridgeHandler implement
     public void initialize() {
         logger.debug("Initializing 4com4t bridge handler.");
 
-        if (getConfig().get(ForcomfortBindingConstants.HOST) == null) {
+        if (getConfig().get(ForComfortBindingConstants.HOST) == null) {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.OFFLINE.CONFIGURATION_ERROR,
                     "Cannot connect to 4com4t bridge. IP address was not set.");
             return;
         }
 
-        if (getConfig().get(ForcomfortBindingConstants.PORT) == null) {
+        if (getConfig().get(ForComfortBindingConstants.PORT) == null) {
             updateStatus(ThingStatus.OFFLINE, ThingStatusDetail.OFFLINE.CONFIGURATION_ERROR,
                     "Cannot connect to 4com4t bridge. Port was not set.");
             return;
         }
 
-        String host = (String) getConfig().get(ForcomfortBindingConstants.HOST);
-        Integer port = ((BigDecimal) getConfig().get(ForcomfortBindingConstants.PORT)).intValueExact();
+        String host = (String) getConfig().get(ForComfortBindingConstants.HOST);
+        Integer port = ((BigDecimal) getConfig().get(ForComfortBindingConstants.PORT)).intValueExact();
 
         tcpClient = new TCPclient(host, port, this);
         tcpClient.connectToServer();

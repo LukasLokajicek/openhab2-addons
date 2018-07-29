@@ -9,7 +9,7 @@ import org.eclipse.smarthome.core.types.State;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
+import org.openhab.binding.forcomfort.ForComfortBindingConstants;
 import org.openhab.binding.forcomfort.internal.AbstractElement;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementParam;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementType;
@@ -126,7 +126,7 @@ public class RGBLight extends AbstractElement {
         }
 
         State state = HSBType.fromRGB(rgb[0], rgb[1], rgb[2]);
-        listener.updateStateThing(ForcomfortBindingConstants.CHANNEL_COLOR, state);
+        listener.updateStateThing(ForComfortBindingConstants.CHANNEL_COLOR, state);
 
     }
 

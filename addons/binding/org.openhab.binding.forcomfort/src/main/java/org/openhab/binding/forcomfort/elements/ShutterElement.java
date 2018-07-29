@@ -8,7 +8,7 @@ import org.eclipse.smarthome.core.library.types.StopMoveType;
 import org.eclipse.smarthome.core.types.State;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
+import org.openhab.binding.forcomfort.ForComfortBindingConstants;
 import org.openhab.binding.forcomfort.internal.AbstractElement;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementParam;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementType;
@@ -121,7 +121,7 @@ public class ShutterElement extends AbstractElement {
             return;
         }
         final State state = new PercentType(percent);
-        listener.updateStateThing(ForcomfortBindingConstants.CHANNEL_SHUTTER, state);
+        listener.updateStateThing(ForComfortBindingConstants.CHANNEL_SHUTTER, state);
     }
 
     public int getOnOffPosition() {

@@ -12,7 +12,7 @@ import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.RefreshType;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
+import org.openhab.binding.forcomfort.ForComfortBindingConstants;
 import org.openhab.binding.forcomfort.elements.ThingListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,8 +21,8 @@ public abstract class AbstractElement {
 
     private static final String ELEMENT_TYPE = "elementType";
     public static final String IS_ON_JSON = "isOn";
-    public static final String ADDRESS_MODULE_JSON = ForcomfortBindingConstants.ADDRESS_MODULE;
-    public static final String ELEMENT_POSITION_JSON = ForcomfortBindingConstants.ELEMENT_POSITION;
+    public static final String ADDRESS_MODULE_JSON = ForComfortBindingConstants.ADDRESS_MODULE;
+    public static final String ELEMENT_POSITION_JSON = ForComfortBindingConstants.ELEMENT_POSITION;
 
     protected int moduleAddress;
     protected int elementPosition;
@@ -39,15 +39,15 @@ public abstract class AbstractElement {
     public static ThingTypeUID getThingTypeUID(ElementType type) {
         switch (type) {
             case DimmableLight:
-                return ForcomfortBindingConstants.THING_TYPE_DIMMABLE_LIGHT;
+                return ForComfortBindingConstants.THING_TYPE_DIMMABLE_LIGHT;
 
             case RgbLightElement:
-                return ForcomfortBindingConstants.THING_TYPE_RGB_LIGHT;
+                return ForComfortBindingConstants.THING_TYPE_RGB_LIGHT;
 
             case SwitchElement:
-                return ForcomfortBindingConstants.THING_TYPE_SWITCH_ELEMENT;
+                return ForComfortBindingConstants.THING_TYPE_SWITCH_ELEMENT;
             case ShutterElement:
-                return ForcomfortBindingConstants.THING_TYPE_SHUTTER_ELEMENT;
+                return ForComfortBindingConstants.THING_TYPE_SHUTTER_ELEMENT;
         }
         return null;
     }

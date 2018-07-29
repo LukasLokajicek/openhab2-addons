@@ -7,7 +7,7 @@
  */
 package org.openhab.binding.forcomfort.internal;
 
-import static org.openhab.binding.forcomfort.ForcomfortBindingConstants.*;
+import static org.openhab.binding.forcomfort.ForComfortBindingConstants.*;
 
 import java.math.BigDecimal;
 import java.util.Set;
@@ -33,18 +33,18 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Sets;
 
-public class ForcomfortThingHandler extends BaseThingHandler implements ThingListener {
+public class ForComfortThingHandler extends BaseThingHandler implements ThingListener {
 
     public final static Set<ThingTypeUID> SUPPORTED_THING_TYPES = Sets.newHashSet(THING_TYPE_DIMMABLE_LIGHT,
             THING_TYPE_SWITCH_ELEMENT, THING_TYPE_RGB_LIGHT, THING_TYPE_JSON_INPUT, THING_TYPE_SHUTTER_ELEMENT);
 
-    private Logger logger = LoggerFactory.getLogger(ForcomfortThingHandler.class);
+    private Logger logger = LoggerFactory.getLogger(ForComfortThingHandler.class);
 
     private AbstractElement element;
 
-    private ForcomfortBridgeHandler bridgeHandler;
+    private ForComfortBridgeHandler bridgeHandler;
 
-    public ForcomfortThingHandler(Thing thing) {
+    public ForComfortThingHandler(Thing thing) {
         super(thing);
     }
 
@@ -105,7 +105,7 @@ public class ForcomfortThingHandler extends BaseThingHandler implements ThingLis
     }
 
     private void checkBridgeStatus() {
-        if (getForcomfortBridgeHandler() != null) {
+        if (getForComfortBridgeHandler() != null) {
             if (getBridge().getStatus() == ThingStatus.ONLINE) {
                 updateStatus(ThingStatus.ONLINE);
             } else {
@@ -116,15 +116,15 @@ public class ForcomfortThingHandler extends BaseThingHandler implements ThingLis
         }
     }
 
-    private synchronized ForcomfortBridgeHandler getForcomfortBridgeHandler() {
+    private synchronized ForComfortBridgeHandler getForComfortBridgeHandler() {
         if (bridgeHandler == null) {
             Bridge bridge = getBridge();
             if (bridge == null) {
                 return null;
             }
             ThingHandler handler = bridge.getHandler();
-            if (handler instanceof ForcomfortBridgeHandler) {
-                bridgeHandler = (ForcomfortBridgeHandler) handler;
+            if (handler instanceof ForComfortBridgeHandler) {
+                bridgeHandler = (ForComfortBridgeHandler) handler;
                 bridgeHandler.registerElement(element);
             } else {
                 return null;
@@ -170,7 +170,7 @@ public class ForcomfortThingHandler extends BaseThingHandler implements ThingLis
         return element;
     }
 
-    public ForcomfortBridgeHandler getBridgeHandler() {
+    public ForComfortBridgeHandler getBridgeHandler() {
         return bridgeHandler;
     }
 }

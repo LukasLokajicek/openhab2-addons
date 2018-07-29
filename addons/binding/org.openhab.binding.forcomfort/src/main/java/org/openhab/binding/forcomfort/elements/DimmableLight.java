@@ -7,7 +7,7 @@ import org.eclipse.smarthome.core.library.types.PercentType;
 import org.eclipse.smarthome.core.types.State;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
+import org.openhab.binding.forcomfort.ForComfortBindingConstants;
 import org.openhab.binding.forcomfort.internal.AbstractElement;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementParam;
 import org.openhab.binding.forcomfort.internal.AbstractElement.ElementType;
@@ -86,7 +86,7 @@ public class DimmableLight extends AbstractElement {
         }
 
         State state = new PercentType(brightness);
-        listener.updateStateThing(ForcomfortBindingConstants.CHANNEL_BRIGHTNESS, state);
+        listener.updateStateThing(ForComfortBindingConstants.CHANNEL_BRIGHTNESS, state);
     }
 
 }

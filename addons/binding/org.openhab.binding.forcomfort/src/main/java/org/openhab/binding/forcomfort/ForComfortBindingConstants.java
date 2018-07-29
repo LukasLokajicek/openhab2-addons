@@ -15,7 +15,7 @@ import org.eclipse.smarthome.core.thing.ThingTypeUID;
  *
  * @author Lukas_L - Initial contribution
  */
-public class ForcomfortBindingConstants {
+public class ForComfortBindingConstants {
 
     public static final String BINDING_ID = "forcomfort";
 

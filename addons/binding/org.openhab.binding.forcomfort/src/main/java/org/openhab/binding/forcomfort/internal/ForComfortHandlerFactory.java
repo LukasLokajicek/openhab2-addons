@@ -36,7 +36,7 @@ public class ForComfortHandlerFactory extends BaseThingHandlerFactory {
     private Logger logger = LoggerFactory.getLogger(ForComfortHandlerFactory.class);
 
     private final static Set<ThingTypeUID> SUPPORTED_THING_TYPES_UIDS = Sets
-            .union(ForcomfortBridgeHandler.SUPPORTED_THING_TYPES, ForcomfortThingHandler.SUPPORTED_THING_TYPES);
+            .union(ForComfortBridgeHandler.SUPPORTED_THING_TYPES, ForComfortThingHandler.SUPPORTED_THING_TYPES);
 
     @Override
     public boolean supportsThingType(ThingTypeUID thingTypeUID) {
@@ -45,11 +45,11 @@ public class ForComfortHandlerFactory extends BaseThingHandlerFactory {
 
     @Override
     protected @Nullable ThingHandler createHandler(Thing thing) {
-        if (ForcomfortBridgeHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {
-            ForcomfortBridgeHandler handler = new ForcomfortBridgeHandler((Bridge) thing);
+        if (ForComfortBridgeHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {
+            ForComfortBridgeHandler handler = new ForComfortBridgeHandler((Bridge) thing);
             return handler;
-        } else if (ForcomfortThingHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {
-            return new ForcomfortThingHandler(thing);
+        } else if (ForComfortThingHandler.SUPPORTED_THING_TYPES.contains(thing.getThingTypeUID())) {
+            return new ForComfortThingHandler(thing);
         }
         logger.warn("Thing Type {} is not supported", thing.getThingTypeUID());
         return null;
