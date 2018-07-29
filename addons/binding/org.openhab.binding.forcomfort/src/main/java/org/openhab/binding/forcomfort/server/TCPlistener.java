@@ -1,4 +1,4 @@
-package org.openhab.binding.forcomfort.internal;
+package org.openhab.binding.forcomfort.server;
 
 import java.util.EventListener;
 

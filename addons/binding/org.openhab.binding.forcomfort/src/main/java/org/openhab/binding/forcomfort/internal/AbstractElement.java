@@ -13,7 +13,7 @@ import org.eclipse.smarthome.core.types.RefreshType;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
-import org.openhab.binding.forcomfort.handler.ThingListener;
+import org.openhab.binding.forcomfort.elements.ThingListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

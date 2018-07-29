@@ -5,7 +5,7 @@
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  */
-package org.openhab.binding.forcomfort.handler;
+package org.openhab.binding.forcomfort.internal;
 
 import static org.openhab.binding.forcomfort.ForcomfortBindingConstants.*;
 
@@ -23,11 +23,11 @@ import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.State;
-import org.openhab.binding.forcomfort.internal.AbstractElement;
-import org.openhab.binding.forcomfort.internal.DimmableLight;
-import org.openhab.binding.forcomfort.internal.RGBLight;
-import org.openhab.binding.forcomfort.internal.ShutterElement;
-import org.openhab.binding.forcomfort.internal.SwitchElement;
+import org.openhab.binding.forcomfort.elements.DimmableLight;
+import org.openhab.binding.forcomfort.elements.RGBLight;
+import org.openhab.binding.forcomfort.elements.ShutterElement;
+import org.openhab.binding.forcomfort.elements.SwitchElement;
+import org.openhab.binding.forcomfort.elements.ThingListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

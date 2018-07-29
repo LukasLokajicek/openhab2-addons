@@ -1,4 +1,4 @@
-package org.openhab.binding.forcomfort.internal;
+package org.openhab.binding.forcomfort.elements;
 
 import org.eclipse.smarthome.core.library.types.HSBType;
 import org.eclipse.smarthome.core.library.types.IncreaseDecreaseType;
@@ -9,7 +9,9 @@ import org.eclipse.smarthome.core.types.State;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.openhab.binding.forcomfort.ForcomfortBindingConstants;
-import org.openhab.binding.forcomfort.handler.ThingListener;
+import org.openhab.binding.forcomfort.internal.AbstractElement;
+import org.openhab.binding.forcomfort.internal.AbstractElement.ElementParam;
+import org.openhab.binding.forcomfort.internal.AbstractElement.ElementType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

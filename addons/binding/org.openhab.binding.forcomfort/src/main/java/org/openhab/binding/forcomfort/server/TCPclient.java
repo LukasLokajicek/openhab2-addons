@@ -1,4 +1,4 @@
-package org.openhab.binding.forcomfort.internal;
+package org.openhab.binding.forcomfort.server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
