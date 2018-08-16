@@ -222,8 +222,12 @@ public class TCPclient {
 
     public void disconnect() {
         keepAlive = false;
-        reconnect.cancel();
-        tcpThread.cancelConnection();
+        if (reconnect != null) {
+            reconnect.cancel();
+        }
+        if (tcpThread != null) {
+            tcpThread.cancelConnection();
+        }
 
     }
 }
