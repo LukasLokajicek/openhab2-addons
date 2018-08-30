@@ -23,6 +23,8 @@ import org.eclipse.smarthome.core.thing.binding.BaseThingHandler;
 import org.eclipse.smarthome.core.thing.binding.ThingHandler;
 import org.eclipse.smarthome.core.types.Command;
 import org.eclipse.smarthome.core.types.State;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.openhab.binding.forcomfort.elements.DimmableLight;
 import org.openhab.binding.forcomfort.elements.RGBLight;
 import org.openhab.binding.forcomfort.elements.ShutterElement;
@@ -139,7 +141,15 @@ public class ForComfortThingHandler extends BaseThingHandler implements ThingLis
         String json = null;
 
         if (command instanceof StringType) {
-            json = ((StringType) command).toFullString();
+            JSONObject jsonObject = new JSONObject();
+            String rawString = ((StringType) command).toFullString();
+            try {
+                jsonObject.put("elementType", "rawMessage");
+                jsonObject.put("msg", rawString);
+            } catch (JSONException e) {
+                logger.warn("Json object cannot be created for the String Type Command: " + rawString);
+            }
+            json = jsonObject.toString();
         } else if (element != null) {
             json = element.commandToJson(command);
         }
